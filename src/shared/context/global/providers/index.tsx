@@ -14,9 +14,11 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
           enableSystem
           disableTransitionOnChange
         > */}
-          <Toaster position="top-right" richColors />
+        <Toaster position="top-right" richColors />
 
-          <DirectionProvider direction="rtl">{children}</DirectionProvider>
+        {/* <DirectionProvider direction="rtl">{children}</DirectionProvider> */}
+        <DirectionProvider>{children}</DirectionProvider>
+
         {/* </ThemeProvider> */}
       </NextAuthProvider>
     </ReactQueryProvider>

@@ -9,7 +9,8 @@ export interface User {
   id: number;
   name: string;
   email: string;
-  userType: UserRole;
+  role?: UserRole;
+  userType?: UserRole;
   imageUrl: string | null;
   phone: string | null;
   createdAt: string;

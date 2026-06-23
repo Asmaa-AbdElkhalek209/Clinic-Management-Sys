@@ -12,7 +12,7 @@ export default function Topbar({ collapsed, setCollapsed }: TopbarProps) {
   const { data: session } = useSession();
 
   return (
-    <header className="flex h-16 items-center justify-between border-b bg-white px-6">
+    <header className="flex h-16 items-center justify-between border-b bg-white px-6z">
       {/* Left */}
       <div className="flex items-center gap-3">
         <button

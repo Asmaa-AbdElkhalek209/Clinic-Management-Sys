@@ -8,7 +8,7 @@ export const loginService = async (data: LoginRequest) => {
     id: response.user.id,
     name: response.user.name,
     email: response.user.email,
-    role: response.user.userType,
+    role: response.user.role,
     accessToken: response.token,
   };
 };

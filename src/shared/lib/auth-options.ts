@@ -27,7 +27,7 @@ export const authOptions: AuthOptions = {
             id: response.user.id.toString(),
             name: response.user.name,
             email: response.user.email,
-            role: response.user.userType,
+            role: response.user.role,
             accessToken: response.token,
           };
         } catch {

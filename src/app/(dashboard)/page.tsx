@@ -1,12 +1,5 @@
-import { redirect } from "next/navigation";
+import React from "react";
 
 export default function DashboardPage() {
-  // مؤقتًا
-  const role = "admin";
-
-  if (role === "admin") redirect("/admin");
-  if (role === "doctor") redirect("/doctor");
-  if (role === "receptionist") redirect("/receptionist");
-
-  return null;
+  return <div></div>;
 }

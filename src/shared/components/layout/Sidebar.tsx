@@ -22,7 +22,7 @@ export default function Sidebar({ role, collapsed }: SidebarProps) {
 
   return (
     <aside
-      className={`border-r bg-white transition-all duration-300 ${
+      className={`fixed z-10 left-0 top-0 border-r bg-white transition-all duration-300 ${
         collapsed ? "w-20" : "w-64"
       }`}
     >

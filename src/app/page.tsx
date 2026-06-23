@@ -7,7 +7,6 @@ import { useSession } from "next-auth/react";
 export default function Home() {
   const router = useRouter();
   const { data: session, status } = useSession();
-  console.log(session + "ssssssssssssssssssssssssssssssssssssssssssss");
 
   useEffect(() => {
     if (status === "loading") return;
@@ -21,7 +20,7 @@ export default function Home() {
 
     switch (role) {
       case "admin":
-        router.replace("/");
+        router.replace("/admin");
         break;
 
       case "doctor":
