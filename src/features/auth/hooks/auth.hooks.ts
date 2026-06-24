@@ -36,31 +36,27 @@ export const useLogin = () => {
 
       toast.success("Login successful 🎉");
 
-      router.refresh();
+      // get fresh session and navigate once to avoid race conditions / redundant refreshes
+      const session = await getSession();
+      const role = session?.user?.role;
 
-      setTimeout(async () => {
-        const session = await getSession();
+      switch (role) {
+        case "admin":
+          router.replace("/admin");
+          break;
 
-        const role = session?.user?.role;
+        case "doctor":
+          router.replace("/doctor");
+          break;
 
-        switch (role) {
-          case "admin":
-            router.push("/admin");
-            break;
+        case "receptionist":
+          router.replace("/receptionist");
+          break;
 
-          case "doctor":
-            router.push("/doctor");
-            break;
-
-          case "receptionist":
-            router.push("/receptionist");
-            break;
-
-          default:
-            router.push("/admin");
-            break;
-        }
-      }, 100);
+        default:
+          router.replace("/admin");
+          break;
+      }
     } catch (error) {
       toast.error("Something went wrong. Please try again.");
     }
@@ -85,7 +81,6 @@ export const useLogout = () => {
       toast.success("Logged out successfully");
 
       router.replace("/login");
-      router.refresh();
     } catch (error) {
       toast.error("Logout failed");
     }

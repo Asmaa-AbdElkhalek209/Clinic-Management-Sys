@@ -1,41 +1,32 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 export default function Home() {
   const router = useRouter();
   const { data: session, status } = useSession();
 
+  const pathname = usePathname();
+
   useEffect(() => {
     if (status === "loading") return;
 
     if (!session) {
-      router.replace("/login");
+      if (pathname !== "/login") router.replace("/login");
       return;
     }
 
     const role = session.user?.role;
 
-    switch (role) {
-      case "admin":
-        router.replace("/admin");
-        break;
+    const target =
+      role === "admin" ? "/admin" :
+      role === "doctor" ? "/doctor" :
+      role === "receptionist" ? "/receptionist" : "/login";
 
-      case "doctor":
-        router.replace("/doctor");
-        break;
-
-      case "receptionist":
-        router.replace("/receptionist");
-        break;
-
-      default:
-        router.replace("/login");
-        break;
-    }
-  }, [session, status, router]);
+    if (pathname !== target) router.replace(target);
+  }, [status, session?.user?.role, pathname, router]);
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 dark:bg-black">
