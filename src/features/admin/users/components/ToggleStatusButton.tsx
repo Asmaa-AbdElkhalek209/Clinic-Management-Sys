@@ -1,8 +1,6 @@
 "use client";
 
-import { useTransition } from "react";
-import { toast } from "sonner";
-import { toggleUserStatus } from "../actions/toggle-user-status.action";
+import { useToggleUserStatus } from "../hooks/use-user-mutations";
 import { UserStatus } from "../types/user.types";
 import { Switch } from "@/shared/components/ui/switch";
 
@@ -15,19 +13,12 @@ export default function ToggleStatusButton({
   userId,
   status,
 }: ToggleStatusButtonProps) {
-  const [isPending, startTransition] = useTransition();
+  const { mutate: toggleStatus, isPending } = useToggleUserStatus();
+
   const isActive = status === "active";
 
   const handleToggle = () => {
-    startTransition(async () => {
-      const result = await toggleUserStatus(userId);
-
-      if (result.success) {
-        toast.success(result.message);
-      } else {
-        toast.error(result.error || "Failed to update status");
-      }
-    });
+    toggleStatus(userId);
   };
 
   return (

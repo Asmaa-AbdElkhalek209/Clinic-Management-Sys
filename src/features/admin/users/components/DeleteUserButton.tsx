@@ -1,8 +1,7 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { toast } from "sonner";
-import { deleteUser } from "../actions/delete-user.action";
+import { useState } from "react";
+import { useDeleteUser } from "../hooks/use-user-mutations";
 import DeleteModal from "@/shared/components/dashboard/DeleteModal";
 
 interface DeleteUserButtonProps {
@@ -14,19 +13,16 @@ export default function DeleteUserButton({
   userId,
   userName,
 }: DeleteUserButtonProps) {
-  const [isPending, startTransition] = useTransition();
+  const { mutate: deleteUser, isPending } = useDeleteUser();
   const [openModalDelete, setOpenModalDelete] = useState(false);
 
   const handleConfirmDelete = () => {
-    startTransition(async () => {
-      const result = await deleteUser(userId);
-
-      if (result.success) {
-        toast.success(result.message || "User deleted successfully");
-        setOpenModalDelete(false);
-      } else {
-        toast.error(result.error || "Failed to delete user");
-      }
+    deleteUser(userId, {
+      onSuccess: (result) => {
+        if (result.success) {
+          setOpenModalDelete(false);
+        }
+      },
     });
   };
 

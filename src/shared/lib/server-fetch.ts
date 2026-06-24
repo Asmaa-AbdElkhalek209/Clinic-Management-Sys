@@ -1,24 +1,18 @@
-// src/shared/lib/server-fetch.ts
-import { getServerSession } from "next-auth";
-import { authOptions } from "./auth-options"; // تأكدي إن المسار صح
-
 export async function serverFetch<T>(
   endpoint: string,
-  options?: RequestInit
+  options?: RequestInit & { token?: string }
 ): Promise<T> {
-  const session = await getServerSession(authOptions);
+  const { token, ...fetchOptions } = options || {};
 
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}${endpoint}`,
     {
-      ...options,
+      ...fetchOptions,
       cache: "no-store",
       headers: {
         "Content-Type": "application/json",
-        ...(session?.accessToken && {
-          Authorization: `Bearer ${session.accessToken}`,
-        }),
-        ...options?.headers,
+        ...(token && { Authorization: `Bearer ${token}` }),
+        ...fetchOptions.headers,
       },
     }
   );

@@ -2,21 +2,25 @@
 
 import { revalidatePath } from "next/cache";
 import { serverFetch } from "@/shared/lib/server-fetch";
+import { getAccessToken } from "@/shared/lib/get-token";
+import type { ActionResult } from "../types/user.types";
 
-export async function toggleUserStatus(userId: number) {
+export async function toggleUserStatus(userId: number): Promise<ActionResult> {
   try {
+    const token = await getAccessToken();
+
     await serverFetch(`/users/${userId}/toggle-status`, {
       method: "PATCH",
+      token,
     });
 
     revalidatePath("/admin/users");
 
     return { success: true, message: "User status updated successfully" };
-  } catch (error: any) {
-    console.error("Failed to toggle status:", error);
+  } catch (error: unknown) {
     return {
       success: false,
-      error: error.message || "Failed to update status",
+      error: error instanceof Error ? error.message : "Failed to update status",
     };
   }
 }

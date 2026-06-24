@@ -1,27 +1,23 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
 
-import {
-  updateUserSchema,
-  type UpdateUserFormValues,
-} from "../schemas/user.schema";
-import { updateUser } from "../actions/update-user.action";
-import { User, SPECIALITIES } from "../types/user.types";
+import { updateUserSchema } from "../schemas/user.schema";
+import { User, SPECIALITIES, UpdateUserPayload } from "../types/user.types";
+import { useUpdateUser } from "../hooks/use-user-mutations";
 
 export default function EditUserModal({ user }: { user: User }) {
   const [open, setOpen] = useState(false);
-  const [isPending, startTransition] = useTransition();
-  const [serverError, setServerError] = useState<string | null>(null);
+
+  const { mutate: updateUser, isPending } = useUpdateUser();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<UpdateUserFormValues>({
+  } = useForm<UpdateUserPayload>({
     resolver: zodResolver(updateUserSchema),
     defaultValues: {
       name: user.name,
@@ -30,26 +26,17 @@ export default function EditUserModal({ user }: { user: User }) {
     },
   });
 
-  function onSubmit(values: UpdateUserFormValues) {
-    setServerError(null);
-
-    startTransition(async () => {
-      const payload = {
-        name: values.name,
-        phone: values.phone,
-        speciality: user.userType === "doctor" ? values.speciality : null,
-      };
-
-      const result = await updateUser(user.id, payload);
-
-      if (result.success) {
-        toast.success(result.message || "User updated successfully");
-        setOpen(false);
-      } else {
-        toast.error(result.error || "Failed to update user");
-        setServerError(result.error);
+  function onSubmit(values: UpdateUserPayload) {
+    updateUser(
+      { id: user.id, values },
+      {
+        onSuccess: (result) => {
+          if (result.success) {
+            setOpen(false);
+          }
+        },
       }
-    });
+    );
   }
 
   return (
@@ -91,7 +78,6 @@ export default function EditUserModal({ user }: { user: User }) {
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                {/* الاسم */}
                 <div className="col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Full Name
@@ -187,12 +173,6 @@ export default function EditUserModal({ user }: { user: User }) {
                   </div>
                 )}
               </div>
-
-              {serverError && (
-                <div className="bg-red-50 text-red-600 text-sm p-3 rounded-md border border-red-200">
-                  {serverError}
-                </div>
-              )}
 
               <div className="flex justify-end gap-3 pt-4 border-t mt-6">
                 <button

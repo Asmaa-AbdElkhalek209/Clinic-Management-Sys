@@ -1,3 +1,6 @@
+import { z } from "zod";
+import { createUserSchema, updateUserSchema } from "../schemas/user.schema";
+
 export type UserRole = "admin" | "doctor" | "receptionist";
 export type UserStatus = "active" | "inactive";
 
@@ -44,24 +47,9 @@ export interface UsersResponse {
   users: User[];
 }
 
-export interface CreateUserPayload {
-  name: string;
-  email: string;
-  password: string;
-  phone: string;
-  userType: "doctor" | "receptionist";
-  speciality?: Speciality | null;
-}
+export type CreateUserPayload = z.infer<typeof createUserSchema>;
+export type UpdateUserPayload = z.infer<typeof updateUserSchema>;
 
-export interface CreateUserResponse {
-  message: string;
-  user: User;
-}
-export interface UpdateUserPayload {
-  name: string;
-  email: string;
-  phone: string;
-  userType: UserRole;
-  status: UserStatus;
-  speciality?: Speciality | null;
-}
+export type ActionResult<T = void> =
+  | { success: true; data?: T; message?: string }
+  | { success: false; error: string };

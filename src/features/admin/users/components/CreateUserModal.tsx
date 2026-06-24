@@ -1,20 +1,17 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  createUserSchema,
-  type CreateUserFormValues,
-} from "../schemas/user.schema";
-import { createUser } from "../actions/create-user.action";
-import { SPECIALITIES } from "../types/user.types";
-import { toast } from "sonner";
+
+import { createUserSchema } from "../schemas/user.schema";
+import { CreateUserPayload, SPECIALITIES } from "../types/user.types";
+import { useCreateUser } from "../hooks/use-user-mutations";
 
 export default function CreateUserModal() {
   const [open, setOpen] = useState(false);
-  const [isPending, startTransition] = useTransition();
-  const [serverError, setServerError] = useState<string | null>(null);
+
+  const { mutate: createUser, isPending } = useCreateUser();
 
   const {
     register,
@@ -22,7 +19,7 @@ export default function CreateUserModal() {
     reset,
     watch,
     formState: { errors },
-  } = useForm<CreateUserFormValues>({
+  } = useForm<CreateUserPayload>({
     resolver: zodResolver(createUserSchema),
     defaultValues: {
       name: "",
@@ -36,34 +33,23 @@ export default function CreateUserModal() {
 
   const selectedUserType = watch("userType");
 
-  function onSubmit(values: CreateUserFormValues) {
-    setServerError(null); // مسح أي خطأ قديم
-
-    startTransition(async () => {
-      const payload = {
-        ...values,
-        speciality: values.userType === "doctor" ? values.speciality : null,
-      };
-
-      const result = await createUser(payload);
-
-      if (result.success) {
-        toast.success(result.message || "User created successfully");
-        reset();
-        setOpen(false);
-      } else {
-        toast.error(result.error || "Failed to create user");
-        setServerError(result.error);
-      }
-    }); // قفل الـ startTransition
-  } // قفل الـ onSubmit
+  function onSubmit(values: CreateUserPayload) {
+    createUser(values, {
+      onSuccess: (result) => {
+        if (result.success) {
+          reset();
+          setOpen(false);
+        }
+      },
+    });
+  }
 
   return (
     <>
-      <div className="flex justify-end w-ful items-center">
+      <div className="flex justify-start w-full items-center">
         <button
           onClick={() => setOpen(true)}
-          className="rounded-md bg-blue-600  px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 transition-colors"
+          className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 transition-colors"
         >
           + Create User
         </button>
@@ -86,7 +72,6 @@ export default function CreateUserModal() {
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
-                {/* Name */}
                 <div className="col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Full Name
@@ -103,7 +88,6 @@ export default function CreateUserModal() {
                   )}
                 </div>
 
-                {/* Email */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Email
@@ -121,7 +105,6 @@ export default function CreateUserModal() {
                   )}
                 </div>
 
-                {/* Phone */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Phone
@@ -138,7 +121,6 @@ export default function CreateUserModal() {
                   )}
                 </div>
 
-                {/* Password */}
                 <div className="col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Password
@@ -156,7 +138,6 @@ export default function CreateUserModal() {
                   )}
                 </div>
 
-                {/* User Type */}
                 <div className="col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     User Role
@@ -168,14 +149,8 @@ export default function CreateUserModal() {
                     <option value="receptionist">Receptionist</option>
                     <option value="doctor">Doctor</option>
                   </select>
-                  {errors.userType && (
-                    <p className="text-xs text-red-500 mt-1">
-                      {errors.userType.message}
-                    </p>
-                  )}
                 </div>
 
-                {/* Speciality - Conditionally Rendered */}
                 {selectedUserType === "doctor" && (
                   <div className="col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -201,14 +176,6 @@ export default function CreateUserModal() {
                 )}
               </div>
 
-              {/* Server Error Display */}
-              {/* {serverError && (
-                <div className="bg-red-50 text-red-600 text-sm p-3 rounded-md border border-red-200 col-span-2">
-                  {serverError}
-                </div>
-              )} */}
-
-              {/* Actions */}
               <div className="flex justify-end gap-3 pt-4 border-t mt-6">
                 <button
                   type="button"

@@ -51,7 +51,7 @@ export default function UserFilters({
   }, [searchTerm]);
 
   return (
-    <div className="flex flex-col sm:flex-row gap-3 items-center">
+    <div className="flex flex-col sm:flex-row gap-3 items-center w-full bg-red-300">
       {/*  1-search */}
       <div className="relative w-full sm:max-w-xs">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />

@@ -2,32 +2,53 @@
 
 import { revalidatePath } from "next/cache";
 import { serverFetch } from "@/shared/lib/server-fetch";
-import type { User } from "../types/user.types";
+import { getAccessToken } from "@/shared/lib/get-token";
+import type {
+  UpdateUserPayload,
+  User,
+  ActionResult,
+} from "../types/user.types";
 import { updateUserSchema } from "../schemas/user.schema";
 
-export async function updateUser(userId: number, values: unknown) {
-  const validatedFields = updateUserSchema.safeParse(values);
+export async function updateUser(
+  userId: number,
+  values: UpdateUserPayload
+): Promise<ActionResult<{ user: User }>> {
+  const validated = updateUserSchema.safeParse(values);
 
-  if (!validatedFields.success) {
-    const errorMessage =
-      validatedFields.error.issues?.[0]?.message || "Invalid data";
-    return { success: false, error: errorMessage };
+  if (!validated.success) {
+    return {
+      success: false,
+      error: validated.error.issues?.[0]?.message || "Invalid data",
+    };
   }
 
   try {
-    await serverFetch<User>(`/users/${userId}`, {
+    const token = await getAccessToken();
+
+    const payload = {
+      name: validated.data.name,
+      phone: validated.data.phone,
+      speciality: validated.data.speciality,
+    };
+
+    const data = await serverFetch<{ user: User }>(`/users/${userId}`, {
       method: "PUT",
-      body: JSON.stringify(validatedFields.data),
+      body: JSON.stringify(payload),
+      token,
     });
 
     revalidatePath("/admin/users");
 
-    return { success: true, message: "User updated successfully" };
-  } catch (error: any) {
-    console.error("Failed to update user:", error);
+    return {
+      success: true,
+      data: data,
+      message: "User updated successfully",
+    };
+  } catch (error: unknown) {
     return {
       success: false,
-      error: error.message || "Failed to update user",
+      error: error instanceof Error ? error.message : "Failed to update user",
     };
   }
 }
