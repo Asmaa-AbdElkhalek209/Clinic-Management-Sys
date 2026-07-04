@@ -20,7 +20,7 @@ export default function Pagination({
   const handlePageChange = (newPage: number) => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("page", newPage.toString());
-    router.push(`/admin/users?${params.toString()}`);
+    router.push(`${window.location.pathname}?${params.toString()}`);
   };
 
   return (

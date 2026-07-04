@@ -1,39 +1,41 @@
-
+export type ActionResult<T = void> =
+  | { success: true; data?: T; message?: string }
+  | { success: false; error: string };
 
 declare type SuccessResponse<T> = {
-    status: "success"
-    message?: string
-    data: T
-}
+  status: "success";
+  message?: string;
+  data: T;
+};
 declare type IErrorResponse = {
-    status: "error"
-    code: number;
-    message?: string;
-    errors?: Array<{
-        path: string;
-        message: string;
-    }>
-}
+  status: "error";
+  code: number;
+  message?: string;
+  errors?: Array<{
+    path: string;
+    message: string;
+  }>;
+};
 
-declare type IApiResponse<T> = SuccessResponse<T> | IErrorResponse
+declare type IApiResponse<T> = SuccessResponse<T> | IErrorResponse;
 
 export interface IPagination {
-    current_page: number;
-    last_page: number;
-    per_page: number;
-    total: number;
+  current_page: number;
+  last_page: number;
+  per_page: number;
+  total: number;
 }
 
 export interface IPaginatedResponse<T> {
-    data: T;
-    meta: IPagination;
+  data: T;
+  meta: IPagination;
 }
 
 export interface ITimeStamp {
-    createdAt: string;
-    updatedAt: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IResponseMessage {
-    message:string
+  message: string;
 }

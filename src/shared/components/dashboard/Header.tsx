@@ -2,15 +2,14 @@
 
 type HeaderProps = {
   title: string;
-  children?: React.ReactNode;
+  description?: string;
 };
 
-export default function Header({ title, children }: HeaderProps) {
+export default function Header({ title, description }: HeaderProps) {
   return (
-    <header className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between text-[#121212]">
-      <h1 className="text-2xl font-bold">{title}</h1>
-
-      {children}
-    </header>
+    <div>
+      <h1 className="text-2xl font-bold text-gray-800">{title}</h1>
+      <p className="text-sm text-gray-500">{description}</p>
+    </div>
   );
 }

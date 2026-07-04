@@ -38,20 +38,15 @@ export const sidebarConfig = {
       icon: ClipboardList,
     },
     {
-      label: "Doctors",
-      href: "/admin/doctors",
-      icon: Stethoscope,
-    },
-    {
       label: "Reports",
       href: "/admin/reports",
       icon: FileBarChart,
     },
-    {
-      label: "Settings",
-      href: "/admin/settings",
-      icon: Settings,
-    },
+    //, {
+    //   label: "Settings",
+    //   href: "/admin/settings",
+    //   icon: Settings,
+    // },
   ],
 
   doctor: [

@@ -1,4 +1,5 @@
 import { Users, Stethoscope, UserCheck } from "lucide-react";
+import StatsCard from "@/shared/components/dashboard/StatsCard";
 
 interface UsersStatsCardsProps {
   total: number;
@@ -11,40 +12,42 @@ export default function UsersStatsCards({
   doctors,
   receptionists,
 }: UsersStatsCardsProps) {
+  const stats = [
+    {
+      label: "Total Users",
+      value: total,
+      icon: Users,
+      iconBg: "bg-blue-50",
+      iconColor: "text-blue-600",
+    },
+    {
+      label: "Doctors",
+      value: doctors,
+      icon: Stethoscope,
+      iconBg: "bg-emerald-50",
+      iconColor: "text-emerald-600",
+    },
+    {
+      label: "Receptionists",
+      value: receptionists,
+      icon: UserCheck,
+      iconBg: "bg-purple-50",
+      iconColor: "text-purple-600",
+    },
+  ];
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      {/*   all total */}
-      <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
-        <div className="p-3 bg-blue-50 text-blue-600 rounded-lg">
-          <Users className="h-6 w-6" />
-        </div>
-        <div>
-          <p className="text-sm text-gray-500">Total Users</p>
-          <p className="text-2xl font-bold text-gray-800">{total}</p>
-        </div>
-      </div>
-
-      {/*  doctors total */}
-      <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
-        <div className="p-3 bg-emerald-50 text-emerald-600 rounded-lg">
-          <Stethoscope className="h-6 w-6" />
-        </div>
-        <div>
-          <p className="text-sm text-gray-500">Doctors</p>
-          <p className="text-2xl font-bold text-gray-800">{doctors}</p>
-        </div>
-      </div>
-
-      {/* Receptionists total  */}
-      <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex items-center gap-4">
-        <div className="p-3 bg-purple-50 text-purple-600 rounded-lg">
-          <UserCheck className="h-6 w-6" />
-        </div>
-        <div>
-          <p className="text-sm text-gray-500">Receptionists</p>
-          <p className="text-2xl font-bold text-gray-800">{receptionists}</p>
-        </div>
-      </div>
+      {stats.map((stat) => (
+        <StatsCard
+          key={stat.label}
+          icon={stat.icon}
+          label={stat.label}
+          value={stat.value}
+          iconBg={stat.iconBg}
+          iconColor={stat.iconColor}
+        />
+      ))}
     </div>
   );
 }

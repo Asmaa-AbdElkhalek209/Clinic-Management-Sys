@@ -6,13 +6,14 @@ export async function getUsers(
   page: number = 1,
   name: string = "",
   role: string = "",
-  status: string = ""
+  status: string = "",
+  limit: number = 10
 ) {
   const token = await getAccessToken();
 
   const params = new URLSearchParams();
   params.set("page", page.toString());
-  params.set("limit", "10");
+  params.set("limit", limit.toString());
 
   if (name.trim()) params.set("name", name.trim());
   if (role) params.set("role", role);
@@ -23,13 +24,20 @@ export async function getUsers(
       `/users?${params.toString()}`,
       { token }
     );
+
     return data;
   } catch (error) {
     console.error("Failed to fetch users:", error);
-    return { total: 0, page: 1, limit: 10, totalPages: 0, users: [] };
+
+    return {
+      total: 0,
+      page: 1,
+      limit,
+      totalPages: 0,
+      users: [],
+    };
   }
 }
-
 export async function getUsersStats() {
   const token = await getAccessToken();
 
