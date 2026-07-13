@@ -8,7 +8,6 @@ import { toggleUserStatus } from "../actions/toggle-user-status.action";
 
 import { CreateUserPayload, UpdateUserPayload } from "../types/user.types";
 
-// 1. Create
 export function useCreateUser() {
   return useMutation({
     mutationFn: (values: CreateUserPayload) => createUser(values),
@@ -16,13 +15,15 @@ export function useCreateUser() {
       if (result.success) {
         toast.success(result.message || "User created successfully");
       } else {
-        toast.error(result.error);
+        toast.error(result.error || "Failed to create user");
       }
+    },
+    onError: () => {
+      toast.error("An unexpected error occurred");
     },
   });
 }
 
-// 2. Update
 export function useUpdateUser() {
   return useMutation({
     mutationFn: ({ id, values }: { id: number; values: UpdateUserPayload }) =>
@@ -31,13 +32,15 @@ export function useUpdateUser() {
       if (result.success) {
         toast.success(result.message || "User updated successfully");
       } else {
-        toast.error(result.error);
+        toast.error(result.error || "Failed to update user");
       }
+    },
+    onError: () => {
+      toast.error("An unexpected error occurred");
     },
   });
 }
 
-// 3. Delete
 export function useDeleteUser() {
   return useMutation({
     mutationFn: (userId: number) => deleteUser(userId),
@@ -45,22 +48,27 @@ export function useDeleteUser() {
       if (result.success) {
         toast.success(result.message || "User deleted successfully");
       } else {
-        toast.error(result.error);
+        toast.error(result.error || "Failed to delete user");
       }
+    },
+    onError: () => {
+      toast.error("An unexpected error occurred");
     },
   });
 }
 
-// 4. Toggle Status
 export function useToggleUserStatus() {
   return useMutation({
     mutationFn: (userId: number) => toggleUserStatus(userId),
     onSuccess: (result) => {
       if (result.success) {
-        toast.success(result.message || "Status updated");
+        toast.success(result.message || "Status updated successfully");
       } else {
-        toast.error(result.error);
+        toast.error(result.error || "Failed to update status");
       }
+    },
+    onError: () => {
+      toast.error("An unexpected error occurred");
     },
   });
 }

@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { signOut } from "next-auth/react";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { loginSchema, LoginFormData } from "../schemas/login.schema";
 
@@ -77,10 +78,11 @@ export const useLogin = () => {
 
 export const useLogout = () => {
   const router = useRouter();
-
+  const queryClient = useQueryClient();
   const logout = async () => {
     try {
       await signOut({ redirect: false });
+      queryClient.clear();
 
       toast.success("Logged out successfully");
 

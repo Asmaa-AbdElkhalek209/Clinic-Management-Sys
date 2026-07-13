@@ -2,12 +2,13 @@
 
 import UserFormModal from "./UserFormModal";
 import DeleteUserButton from "./DeleteUserButton";
-import { User } from "../types/user.types";
+import { User, Speciality } from "../types/user.types";
 import ToggleStatusButton from "./ToggleStatusButton";
 import DataTable from "@/shared/components/dashboard/DataTable";
 
 interface UsersTableProps {
   users: User[];
+  specialities: Speciality[];
 }
 
 const getInitials = (name: string) => {
@@ -17,7 +18,7 @@ const getInitials = (name: string) => {
     : name.substring(0, 2).toUpperCase();
 };
 
-export default function UsersTable({ users }: UsersTableProps) {
+export default function UsersTable({ users, specialities }: UsersTableProps) {
   const columns = [
     { label: "User" },
     { label: "Role" },
@@ -81,7 +82,8 @@ export default function UsersTable({ users }: UsersTableProps) {
           </td>
           <td className="px-6 py-4 whitespace-nowrap">
             <div className="flex items-center justify-center gap-2">
-              <UserFormModal user={user} />
+              {/* ✅ تمرير الـ specialities للمودال اللي جوا الجدول */}
+              <UserFormModal user={user} specialities={specialities} />
               <DeleteUserButton userId={user.id} userName={user.name} />
             </div>
           </td>

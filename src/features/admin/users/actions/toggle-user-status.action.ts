@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { serverFetch } from "@/shared/lib/server-fetch";
 import { getAccessToken } from "@/shared/lib/get-token";
-import type { ActionResult } from "../types/user.types";
+import { ActionResult } from "@/shared/types/api";
 
 export async function toggleUserStatus(userId: number): Promise<ActionResult> {
   try {

@@ -8,7 +8,6 @@ import { getLatestAppointments } from "@/features/admin/dashboard/actions/get-la
 import QuickActions from "@/features/admin/dashboard/components/QuickActions";
 
 export default async function AdminDashboardPage() {
-  // جلب البيانات بشكل متوازي في الـ Server
   const [stats, latestAppointments] = await Promise.all([
     getDashboardStats(),
     getLatestAppointments(),

@@ -1,3 +1,4 @@
+import { getSpecialities } from "@/features/admin/users/actions/get-specialities.action";
 import {
   getUsers,
   getUsersStats,
@@ -26,9 +27,10 @@ export default async function UsersPage({
   const roleFilter = params.role || "";
   const statusFilter = params.status || "";
 
-  const [data, stats] = await Promise.all([
+  const [data, stats, specialities] = await Promise.all([
     getUsers(currentPage, searchQuery, roleFilter, statusFilter),
     getUsersStats(),
+    getSpecialities(),
   ]);
 
   return (
@@ -47,7 +49,7 @@ export default async function UsersPage({
       />
 
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 bg-white p-4 rounded-lg shadow-sm border border-gray-100">
-        <UserFormModal />
+        <UserFormModal specialities={specialities} />
 
         <UserFilters
           initialSearch={searchQuery}
@@ -56,7 +58,7 @@ export default async function UsersPage({
         />
       </div>
 
-      <UsersTable users={data.users} />
+      <UsersTable users={data.users} specialities={specialities} />
 
       <Pagination currentPage={data.page} totalPages={data.totalPages} />
     </div>

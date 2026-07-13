@@ -17,14 +17,10 @@ export default function ToggleStatusButton({
 
   const isActive = status === "active";
 
-  const handleToggle = () => {
-    toggleStatus(userId);
-  };
-
   return (
     <Switch
       checked={isActive}
-      onCheckedChange={handleToggle}
+      onCheckedChange={() => toggleStatus(userId)}
       disabled={isPending}
       className="data-[state=checked]:bg-emerald-500 data-[state=unchecked]:bg-gray-300"
     />

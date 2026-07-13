@@ -8,7 +8,7 @@ import {
   User,
   CreateUserPayload,
   UpdateUserPayload,
-  SPECIALITIES,
+  Speciality,
 } from "../types/user.types";
 import { useCreateUser } from "../hooks/use-user-mutations";
 import { useUpdateUser } from "../hooks/use-user-mutations";
@@ -16,9 +16,13 @@ import FormModal from "@/shared/components/dashboard/FormModal";
 
 interface UserFormModalProps {
   user?: User;
+  specialities?: Speciality[];
 }
 
-export default function UserFormModal({ user }: UserFormModalProps) {
+export default function UserFormModal({
+  user,
+  specialities,
+}: UserFormModalProps) {
   const [open, setOpen] = useState(false);
   const isEditMode = !!user;
 
@@ -34,17 +38,24 @@ export default function UserFormModal({ user }: UserFormModalProps) {
     formState: { errors },
   } = useForm<CreateUserPayload | UpdateUserPayload>({
     resolver: zodResolver(isEditMode ? updateUserSchema : createUserSchema),
-    defaultValues: {
-      name: user?.name || "",
-      email: user?.email || "",
-      password: "",
-      phone: user?.phone || "",
-      userType: user?.userType || "receptionist",
-      speciality: user?.speciality || undefined,
-    },
+    defaultValues: isEditMode
+      ? {
+          name: user.name,
+          phone: user.phone,
+          speciality: user.speciality || undefined,
+        }
+      : {
+          name: "",
+          email: "",
+          password: "",
+          phone: "",
+          userType: "receptionist",
+          speciality: undefined,
+        },
   });
 
-  const selectedUserType = watch("userType") || user?.userType;
+  const selectedUserType =
+    watch("userType") || user?.userType || "receptionist";
 
   function onSubmit(values: CreateUserPayload | UpdateUserPayload) {
     if (isEditMode && user) {
@@ -135,7 +146,7 @@ export default function UserFormModal({ user }: UserFormModalProps) {
                 className={`w-full rounded-md border p-2 focus:ring-2 focus:ring-blue-500 focus:outline-none ${isEditMode ? "border-gray-200 bg-gray-50 text-gray-500 cursor-not-allowed" : "border-gray-300"}`}
                 placeholder="email@clinic.com"
               />
-              {errors.email && (
+              {errors.email && !isEditMode && (
                 <p className="text-xs text-red-500 mt-1">
                   {errors.email.message}
                 </p>
@@ -189,7 +200,7 @@ export default function UserFormModal({ user }: UserFormModalProps) {
                 <option value="receptionist">Receptionist</option>
                 <option value="doctor">Doctor</option>
               </select>
-              {errors.userType && (
+              {errors.userType && !isEditMode && (
                 <p className="text-xs text-red-500 mt-1">
                   {errors.userType.message}
                 </p>
@@ -197,19 +208,30 @@ export default function UserFormModal({ user }: UserFormModalProps) {
             </div>
 
             {isEditMode && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Status
-                </label>
-                <select
-                  defaultValue={user.status}
-                  disabled
-                  className="w-full rounded-md border border-gray-200 p-2 bg-gray-50 text-gray-500 cursor-not-allowed"
-                >
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                </select>
-              </div>
+              <>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Role
+                  </label>
+                  <input
+                    type="text"
+                    value={user.userType}
+                    disabled
+                    className="w-full rounded-md border border-gray-200 p-2 bg-gray-50 text-gray-500 cursor-not-allowed"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Status
+                  </label>
+                  <input
+                    type="text"
+                    value={user.status}
+                    disabled
+                    className="w-full rounded-md border border-gray-200 p-2 bg-gray-50 text-gray-500 cursor-not-allowed"
+                  />
+                </div>
+              </>
             )}
 
             {selectedUserType === "doctor" && (
@@ -222,9 +244,9 @@ export default function UserFormModal({ user }: UserFormModalProps) {
                   className="w-full rounded-md border border-gray-300 p-2 bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
                 >
                   <option value="">Select Speciality...</option>
-                  {SPECIALITIES.map((spec) => (
-                    <option key={spec} value={spec}>
-                      {spec}
+                  {(specialities || []).map((spec) => (
+                    <option key={spec.key} value={spec.label}>
+                      {spec.label}
                     </option>
                   ))}
                 </select>

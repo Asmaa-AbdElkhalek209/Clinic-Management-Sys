@@ -26,7 +26,7 @@ export async function getUsers(
     );
 
     return data;
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Failed to fetch users:", error);
 
     return {
@@ -57,7 +57,8 @@ export async function getUsersStats() {
       doctors: doctorsRes.total || 0,
       receptionists: receptionistsRes.total || 0,
     };
-  } catch (error) {
+  } catch (error: unknown) {
+    console.error("Failed to fetch users stats:", error);
     return { total: 0, doctors: 0, receptionists: 0 };
   }
 }

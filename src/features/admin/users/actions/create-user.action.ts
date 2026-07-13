@@ -3,12 +3,9 @@
 import { revalidatePath } from "next/cache";
 import { serverFetch } from "@/shared/lib/server-fetch";
 import { getAccessToken } from "@/shared/lib/get-token";
-import type {
-  CreateUserPayload,
-  User,
-  ActionResult,
-} from "../types/user.types";
+import type { CreateUserPayload, User } from "../types/user.types";
 import { createUserSchema } from "../schemas/user.schema";
+import { ActionResult } from "@/shared/types/api";
 
 export async function createUser(
   values: CreateUserPayload

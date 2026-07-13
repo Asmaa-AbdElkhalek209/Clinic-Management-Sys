@@ -1,7 +1,7 @@
 "use client";
 
 import { Menu, Bell } from "lucide-react";
-import { useSession } from "next-auth/react";
+import UserDropdown from "../dashboard/UserDropdown"; 
 
 type TopbarProps = {
   collapsed: boolean;
@@ -9,17 +9,15 @@ type TopbarProps = {
 };
 
 export default function Topbar({ collapsed, setCollapsed }: TopbarProps) {
-  const { data: session } = useSession();
-
   return (
-    <header className="flex h-16 items-center justify-between border-b bg-white px-6z">
+    <header className="flex h-16 items-center justify-between border-b bg-white px-6">
       {/* Left */}
       <div className="flex items-center gap-3">
         <button
           onClick={() => setCollapsed(!collapsed)}
           className="rounded-lg p-2 hover:bg-slate-100"
         >
-          <Menu size={20} />
+          <Menu size={20} className="text-slate-600" />
         </button>
 
         <h1 className="font-semibold text-slate-700">Dashboard</h1>
@@ -27,19 +25,10 @@ export default function Topbar({ collapsed, setCollapsed }: TopbarProps) {
 
       {/* Right */}
       <div className="flex items-center gap-4">
-        <button className="rounded-lg p-2 hover:bg-slate-100">
-          <Bell size={18} />
+        <button className="rounded-lg p-2 hover:bg-slate-100 transition-colors">
+          <Bell size={18} className="text-slate-600" />
         </button>
-
-        <div className="flex items-center gap-3">
-          <div className="h-9 w-9 rounded-full bg-blue-500" />
-
-          <div className="hidden md:block">
-            <p className="text-sm font-medium">Welcome {session?.user?.name}</p>
-
-            <p className="text-xs text-slate-500">{session?.user?.role}</p>
-          </div>
-        </div>
+        <UserDropdown />
       </div>
     </header>
   );

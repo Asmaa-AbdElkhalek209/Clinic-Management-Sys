@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Search } from "lucide-react";
 
@@ -16,31 +16,30 @@ export default function UserFilters({
   initialStatus,
 }: UserFiltersProps) {
   const router = useRouter();
-  const searchParams = useSearchParams(); //url prameters
+  const searchParams = useSearchParams();
 
   const [searchTerm, setSearchTerm] = useState(initialSearch);
 
-  const updateURL = (newSearch: string, newRole: string, newStatus: string) => {
-    const params = new URLSearchParams(searchParams.toString());
+  const updateURL = useCallback(
+    (newSearch: string, newRole: string, newStatus: string) => {
+      const params = new URLSearchParams(searchParams.toString());
 
-    // 1. Search
-    if (newSearch) params.set("name", newSearch);
-    else params.delete("name");
+      if (newSearch) params.set("name", newSearch);
+      else params.delete("name");
 
-    // 2. Role
-    if (newRole && newRole !== "all") params.set("role", newRole);
-    else params.delete("role");
+      if (newRole && newRole !== "all") params.set("role", newRole);
+      else params.delete("role");
 
-    // 3. Status
-    if (newStatus && newStatus !== "all") params.set("status", newStatus);
-    else params.delete("status");
+      if (newStatus && newStatus !== "all") params.set("status", newStatus);
+      else params.delete("status");
 
-    params.set("page", "1");
+      params.set("page", "1");
 
-    router.push(`/admin/users?${params.toString()}`);
-  };
+      router.push(`/admin/users?${params.toString()}`);
+    },
+    [router, searchParams]
+  );
 
-  //search only
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       if (searchTerm !== initialSearch) {
@@ -48,11 +47,10 @@ export default function UserFilters({
       }
     }, 500);
     return () => clearTimeout(delayDebounceFn);
-  }, [searchTerm]);
+  }, [searchTerm, initialSearch, initialRole, initialStatus, updateURL]);
 
   return (
     <div className="flex flex-col sm:flex-row gap-3 items-center w-full justify-end lg:w-[70%]">
-      {/*  1-search */}
       <div className="relative w-full sm:max-w-xs">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
         <input
@@ -64,7 +62,6 @@ export default function UserFilters({
         />
       </div>
 
-      {/* filter  */}
       <select
         value={initialRole}
         onChange={(e) => updateURL(searchTerm, e.target.value, initialStatus)}

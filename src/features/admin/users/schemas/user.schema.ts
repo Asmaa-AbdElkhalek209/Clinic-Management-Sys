@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { SPECIALITIES } from "../types/user.types";
 
 export const createUserSchema = z
   .object({
@@ -15,7 +14,11 @@ export const createUserSchema = z
       .string()
       .regex(/^01[0125][0-9]{8}$/, "Must be a valid Egyptian phone number"),
     userType: z.enum(["doctor", "receptionist"]),
-    speciality: z.enum(SPECIALITIES).optional().nullable(),
+    speciality: z
+      .string()
+      .min(1, "Speciality is required")
+      .optional()
+      .nullable(),
   })
   .superRefine((data, ctx) => {
     if (data.userType === "doctor" && !data.speciality) {
@@ -30,5 +33,5 @@ export const createUserSchema = z
 export const updateUserSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
   phone: z.string().min(11, "Phone number is invalid"),
-  speciality: z.enum(SPECIALITIES).optional().nullable(),
+  speciality: z.string().min(1).optional().nullable(),
 });
