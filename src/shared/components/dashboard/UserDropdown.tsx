@@ -5,7 +5,7 @@ import { User, Settings, LogOut, ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useLogout } from "@/features/auth/hooks/auth.hooks";
-import { useProfile } from "@/features/profile/hooks/use-profile";
+import { useProfile } from "@/features/admin/profile/hooks/use-profile";
 
 export default function UserDropdown() {
   const { data: session } = useSession();
