@@ -30,7 +30,7 @@ export async function updateProfile(
   if (!validated.success) {
     return {
       success: false,
-      error: validated.error.issues?.[0]?.message || "Invalid data",
+      error: validated.error.issues[0]?.message ?? "Invalid data",
     };
   }
 
@@ -62,12 +62,21 @@ export async function updateProfile(
       token,
     });
 
+    if (!response.success) {
+      return {
+        success: false,
+        error: response.message,
+      };
+    }
+
     return {
-      success: response.success,
+      success: true,
       message: response.message,
-      data: { user: response.user },
+      data: {
+        user: response.user,
+      },
     };
-  } catch (error: unknown) {
+  } catch (error) {
     return {
       success: false,
       error:

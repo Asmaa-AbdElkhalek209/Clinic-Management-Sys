@@ -24,10 +24,11 @@ export default function ProfessionalInformationCard({
       <div className="grid gap-5 md:grid-cols-2">
         <div>
           <label className="mb-2 block text-sm font-medium">Experience</label>
-
           <input
             type="number"
-            {...register("experienceYears")}
+            {...register("experienceYears", {
+              valueAsNumber: true,
+            })}
             className={inputClasses}
           />
         </div>
@@ -36,8 +37,13 @@ export default function ProfessionalInformationCard({
           <label className="mb-2 block text-sm font-medium">
             Consultation Fees
           </label>
-
-          <input type="number" {...register("fees")} className={inputClasses} />
+          <input
+            type="number"
+            {...register("fees", {
+              valueAsNumber: true,
+            })}
+            className={inputClasses}
+          />{" "}
         </div>
         <div className="md:col-span-2">
           <label className="mb-2 block text-sm font-medium">Speciality</label>
