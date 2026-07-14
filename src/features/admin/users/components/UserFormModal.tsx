@@ -3,9 +3,11 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createUserSchema, updateUserSchema } from "../schemas/user.schema";
+// import { createUserSchema, updateUserSchema } from "../schemas/user.schema";
+import { userFormSchema } from "../schemas/user.schema";
 import {
   User,
+  UserFormValues,
   CreateUserPayload,
   UpdateUserPayload,
   Speciality,
@@ -36,8 +38,8 @@ export default function UserFormModal({
     reset,
     watch,
     formState: { errors },
-  } = useForm<CreateUserPayload | UpdateUserPayload>({
-    resolver: zodResolver(isEditMode ? updateUserSchema : createUserSchema),
+  } = useForm<UserFormValues>({
+    resolver: zodResolver(userFormSchema),
     defaultValues: isEditMode
       ? {
           name: user.name,
@@ -57,18 +59,38 @@ export default function UserFormModal({
   const selectedUserType =
     watch("userType") || user?.userType || "receptionist";
 
-  function onSubmit(values: CreateUserPayload | UpdateUserPayload) {
+  function onSubmit(values: UserFormValues) {
     if (isEditMode && user) {
+      const payload: UpdateUserPayload = {
+        name: values.name,
+        phone: values.phone,
+        speciality: values.speciality,
+      };
+
       updateUser(
-        { id: user.id, values: values as UpdateUserPayload },
+        {
+          id: user.id,
+          values: payload,
+        },
         {
           onSuccess: (result) => {
-            if (result.success) setOpen(false);
+            if (result.success) {
+              setOpen(false);
+            }
           },
         }
       );
     } else {
-      createUser(values as CreateUserPayload, {
+      const payload: CreateUserPayload = {
+        name: values.name,
+        email: values.email!,
+        password: values.password!,
+        phone: values.phone,
+        userType: values.userType!,
+        speciality: values.speciality,
+      };
+
+      createUser(payload, {
         onSuccess: (result) => {
           if (result.success) {
             reset();

@@ -4,16 +4,13 @@ import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import {
-  createAppointmentSchema,
-  updateAppointmentSchema,
-} from "../schemas/appointment.schema";
+import { appointmentFormSchema } from "../schemas/appointment.schema";
 
 import {
   Appointment,
+  AppointmentFormValues,
   CreateAppointmentPayload,
   UpdateAppointmentPayload,
-  AppointmentFormValues,
 } from "../types/appointment.types";
 
 import {
@@ -59,9 +56,7 @@ export default function AppointmentFormModal({
     reset,
     formState: { errors },
   } = useForm<AppointmentFormValues>({
-    resolver: zodResolver(
-      isEditMode ? updateAppointmentSchema : createAppointmentSchema
-    ),
+    resolver: zodResolver(appointmentFormSchema),
     defaultValues: {
       patientId: appointment?.patient?.id || undefined,
       doctorId: appointment?.doctor?.id || undefined,

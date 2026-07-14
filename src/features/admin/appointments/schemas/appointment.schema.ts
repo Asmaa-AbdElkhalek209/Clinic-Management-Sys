@@ -24,6 +24,18 @@ export const updateAppointmentSchema = z.object({
     .optional(),
 });
 
+// appointment.schema.ts
+
+export const appointmentFormSchema = z.object({
+  patientId: z.number().optional(),
+  doctorId: z.number().optional(),
+
+  slotDate: z.string().min(1, "Date is required"),
+
+  slotTime: z.string().regex(timeRegex, "Invalid time format (e.g. 09:00)"),
+
+  status: z.enum(["pending", "confirmed", "cancelled", "completed"]).optional(),
+});
 export const updateAppointmentStatusSchema = z.object({
   status: z.enum(["pending", "confirmed", "cancelled", "completed"], {
     error: "Invalid status value",
