@@ -1,5 +1,5 @@
+import { getSpecialities } from "../../users/actions/get-specialities.action";
 import ProfileForm from "./ProfileForm";
-import { getSpecialities } from "../../admin/users/actions/get-specialities.action";
 
 export default async function ProfilePageContent() {
   const specialities = await getSpecialities();
