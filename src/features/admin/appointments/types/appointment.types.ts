@@ -40,7 +40,15 @@ export type UpdateAppointmentPayload = z.infer<typeof updateAppointmentSchema>;
 export type UpdateAppointmentStatusPayload = z.infer<
   typeof updateAppointmentStatusSchema
 >;
+export interface AppointmentFormValues {
+  patientId?: number;
+  doctorId?: number;
 
+  slotDate: string;
+  slotTime: string;
+
+  status?: AppointmentStatus;
+}
 export type CreateAppointmentResult = ActionResult<{
   appointment: Appointment;
 }>;

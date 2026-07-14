@@ -13,6 +13,7 @@ import {
   Appointment,
   CreateAppointmentPayload,
   UpdateAppointmentPayload,
+  AppointmentFormValues,
 } from "../types/appointment.types";
 
 import {
@@ -57,7 +58,7 @@ export default function AppointmentFormModal({
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<CreateAppointmentPayload | UpdateAppointmentPayload>({
+  } = useForm<AppointmentFormValues>({
     resolver: zodResolver(
       isEditMode ? updateAppointmentSchema : createAppointmentSchema
     ),
@@ -66,34 +67,40 @@ export default function AppointmentFormModal({
       doctorId: appointment?.doctor?.id || undefined,
       slotDate: appointment?.slotDate ? appointment.slotDate.split("T")[0] : "",
       slotTime: appointment?.slotTime || "",
+      status: appointment?.status,
     },
   });
 
-  function onSubmit(
-    values: CreateAppointmentPayload | UpdateAppointmentPayload
-  ) {
+  function onSubmit(values: AppointmentFormValues) {
     if (isEditMode && appointment) {
-      console.log("UPDATE");
-      console.log("idddddddddddddddddddddddddd", appointment.id);
+      const payload: UpdateAppointmentPayload = {
+        slotDate: values.slotDate,
+        slotTime: values.slotTime,
+        status: values.status,
+      };
 
       updateAppointment(
         {
           id: appointment.id,
-          values: values as UpdateAppointmentPayload,
+          values: payload,
         },
         {
           onSuccess: (result) => {
             if (result.success) {
               setOpen(false);
-              console.log("Appointment updated successfully:", result);
             }
           },
         }
       );
     } else {
-      console.log("CREATE");
+      const payload: CreateAppointmentPayload = {
+        patientId: values.patientId!,
+        doctorId: values.doctorId!,
+        slotDate: values.slotDate,
+        slotTime: values.slotTime,
+      };
 
-      createAppointment(values as CreateAppointmentPayload, {
+      createAppointment(payload, {
         onSuccess: (result) => {
           if (result.success) {
             reset();
