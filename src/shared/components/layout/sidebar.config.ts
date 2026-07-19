@@ -3,8 +3,6 @@ import {
   Users,
   CalendarDays,
   ClipboardList,
-  Stethoscope,
-  Settings,
   FileBarChart,
 } from "lucide-react";
 

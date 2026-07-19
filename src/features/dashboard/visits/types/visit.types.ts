@@ -1,12 +1,9 @@
 import { z } from "zod";
-import {
-  createVisitSchema,
-  updateVisitSchema,
-} from "../schemas/visit.schema";
+import { createVisitSchema, updateVisitSchema } from "../schemas/visit.schema";
 import { ActionResult } from "@/shared/types/api";
 
-import { Patient } from "@/features/admin/patients/types/patient.types";
-import { User } from "@/features/admin/users/types/user.types";
+import { Patient } from "@/features/dashboard/patients/types/patient.types";
+import { User } from "@/features/dashboard/users/types/user.types";
 
 export interface Prescription {
   id?: number;

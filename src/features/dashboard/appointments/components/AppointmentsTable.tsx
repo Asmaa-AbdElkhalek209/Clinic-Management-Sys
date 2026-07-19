@@ -7,7 +7,7 @@ import DataTable from "@/shared/components/dashboard/DataTable";
 import { Appointment } from "../types/appointment.types";
 import DeleteAppointmentButton from "./DeleteAppointmentButton";
 import StatusDropdown from "./StatusDropdown";
-import AppointmentFormModal from "./AppointmentFormModal";
+import UpdateAppointmentForm from "./UpdateAppointmentForm";
 
 interface DropdownItem {
   id: number;
@@ -31,8 +31,6 @@ const columns = [
 
 export default function AppointmentsTable({
   appointments,
-  doctors,
-  patients,
 }: AppointmentsTableProps) {
   if (appointments.length === 0) {
     return (
@@ -108,11 +106,7 @@ export default function AppointmentsTable({
           {/* Actions */}
           <td className="px-6 py-4 whitespace-nowrap">
             <div className="flex items-center justify-center gap-2">
-              <AppointmentFormModal
-                appointment={appointment}
-                doctors={doctors}
-                patients={patients}
-              />
+              <UpdateAppointmentForm appointment={appointment} />
 
               <DeleteAppointmentButton appointmentId={appointment.id} />
             </div>

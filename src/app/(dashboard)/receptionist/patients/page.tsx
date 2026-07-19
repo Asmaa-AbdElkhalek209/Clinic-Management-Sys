@@ -1,11 +1,11 @@
 import {
   getPatients,
   getPatientsStats,
-} from "@/features/admin/patients/actions/get-patients.action";
-import PatientFormModal from "@/features/admin/patients/components/PatientFormModal";
-import PatientFilters from "@/features/admin/patients/components/PatientFilters";
-import PatientsTable from "@/features/admin/patients/components/PatientsTable";
-import PatientsStatsCards from "@/features/admin/patients/components/PatientsStatsCards";
+} from "@/features/dashboard/patients/actions/get-patients.action";
+import PatientFormModal from "@/features/dashboard/patients/components/PatientFormModal";
+import PatientFilters from "@/features/dashboard/patients/components/PatientFilters";
+import PatientsTable from "@/features/dashboard/patients/components/PatientsTable";
+import PatientsStatsCards from "@/features/dashboard/patients/components/PatientsStatsCards";
 import Header from "@/shared/components/dashboard/Header";
 import Pagination from "@/shared/components/dashboard/Pagination";
 

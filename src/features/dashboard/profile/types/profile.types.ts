@@ -8,7 +8,7 @@ import type {
   UserStatus,
   Speciality,
   SpecialitiesResponse,
-} from "@/features/admin/users/types/user.types";
+} from "@/features/dashboard/users/types/user.types";
 
 export type UserProfile = User;
 

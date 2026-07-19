@@ -1,12 +1,12 @@
-import { getSpecialities } from "@/features/admin/users/actions/get-specialities.action";
+import { getSpecialities } from "@/features/dashboard/users/actions/get-specialities.action";
 import {
   getUsers,
   getUsersStats,
-} from "@/features/admin/users/actions/get-users.action";
-import CreateUserForm from "@/features/admin/users/components/CreateUserForm";
-import UserFilters from "@/features/admin/users/components/UserFilters";
-import UsersStatsCards from "@/features/admin/users/components/UsersStatsCards";
-import UsersTable from "@/features/admin/users/components/UsersTable";
+} from "@/features/dashboard/users/actions/get-users.action";
+import CreateUserForm from "@/features/dashboard/users/components/CreateUserForm";
+import UserFilters from "@/features/dashboard/users/components/UserFilters";
+import UsersStatsCards from "@/features/dashboard/users/components/UsersStatsCards";
+import UsersTable from "@/features/dashboard/users/components/UsersTable";
 import Header from "@/shared/components/dashboard/Header";
 import Pagination from "@/shared/components/dashboard/Pagination";
 

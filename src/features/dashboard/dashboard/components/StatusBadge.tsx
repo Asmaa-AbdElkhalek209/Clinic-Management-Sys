@@ -1,4 +1,4 @@
-import { AppointmentStatus } from "@/features/admin/appointments/types/appointment.types";
+import { AppointmentStatus } from "@/features/dashboard/appointments/types/appointment.types";
 
 const STATUS_STYLES: Record<AppointmentStatus, string> = {
   pending: "bg-yellow-50 text-yellow-700 ring-yellow-600/20",

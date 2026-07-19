@@ -1,5 +1,7 @@
-import React from "react";
+import AppointmentsPageContent, {
+  type AppointmentsPageProps,
+} from "@/features/dashboard/appointments/pages/AppointmentsPageContent";
 
-export default function page() {
-  return <div></div>;
+export default function Page(props: AppointmentsPageProps) {
+  return <AppointmentsPageContent {...props} />;
 }

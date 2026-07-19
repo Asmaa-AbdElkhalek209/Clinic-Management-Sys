@@ -31,7 +31,6 @@ export default function StatusDropdown({
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { mutate: updateStatus, isPending } = useUpdateAppointmentStatus();
 
-  // يقفل الـ Dropdown لما تضغط بره
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (

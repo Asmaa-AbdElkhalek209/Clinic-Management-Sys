@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 interface DropdownItem {
   id: number;
@@ -27,41 +27,24 @@ export default function AppointmentFilters({
 }: AppointmentFiltersProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
+  console.log(pathname);
 
-  const [filters, setFilters] = useState({
-    date: initialDate,
-    status: initialStatus,
-    doctorId: initialDoctorId,
-    patientId: initialPatientId,
-  });
-
-  useEffect(() => {
-    setFilters({
-      date: initialDate,
-      status: initialStatus,
-      doctorId: initialDoctorId,
-      patientId: initialPatientId,
-    });
-  }, [initialDate, initialStatus, initialDoctorId, initialPatientId]);
-
-  const handleChange = (key: keyof typeof filters, value: string) => {
-    setFilters((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
-  };
-
-  const applyFilters = () => {
+  const updateFilter = (
+    key: "date" | "status" | "doctorId" | "patientId",
+    value: string
+  ) => {
     const params = new URLSearchParams(searchParams.toString());
 
-    Object.entries(filters).forEach(([key, value]) => {
-      if (value) params.set(key, value);
-      else params.delete(key);
-    });
+    if (value) {
+      params.set(key, value);
+    } else {
+      params.delete(key);
+    }
 
     params.set("page", "1");
 
-    router.push(`/admin/appointments?${params.toString()}`);
+    router.replace(`${pathname}?${params.toString()}`);
   };
 
   return (
@@ -74,8 +57,8 @@ export default function AppointmentFilters({
 
         <input
           type="date"
-          value={filters.date}
-          onChange={(e) => handleChange("date", e.target.value)}
+          value={initialDate}
+          onChange={(e) => updateFilter("date", e.target.value)}
           className="w-full sm:w-auto rounded-md border border-gray-300 px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
         />
       </div>
@@ -87,9 +70,9 @@ export default function AppointmentFilters({
         </label>
 
         <select
-          value={filters.status}
-          onChange={(e) => handleChange("status", e.target.value)}
-          className="w-full sm:w-auto rounded-md border border-gray-300 px-3 py-2 bg-white text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          value={initialStatus}
+          onChange={(e) => updateFilter("status", e.target.value)}
+          className="w-full sm:w-auto rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
         >
           <option value="">All Statuses</option>
           <option value="pending">Pending</option>
@@ -106,9 +89,9 @@ export default function AppointmentFilters({
         </label>
 
         <select
-          value={filters.doctorId}
-          onChange={(e) => handleChange("doctorId", e.target.value)}
-          className="w-48 rounded-md border border-gray-300 px-3 py-2 bg-white text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          value={initialDoctorId}
+          onChange={(e) => updateFilter("doctorId", e.target.value)}
+          className="w-48 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
         >
           <option value="">All Doctors</option>
 
@@ -127,9 +110,9 @@ export default function AppointmentFilters({
         </label>
 
         <select
-          value={filters.patientId}
-          onChange={(e) => handleChange("patientId", e.target.value)}
-          className="w-48 rounded-md border border-gray-300 px-3 py-2 bg-white text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          value={initialPatientId}
+          onChange={(e) => updateFilter("patientId", e.target.value)}
+          className="w-48 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
         >
           <option value="">All Patients</option>
 
@@ -140,13 +123,6 @@ export default function AppointmentFilters({
           ))}
         </select>
       </div>
-
-      <button
-        onClick={applyFilters}
-        className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 transition-colors"
-      >
-        Apply
-      </button>
     </div>
   );
 }

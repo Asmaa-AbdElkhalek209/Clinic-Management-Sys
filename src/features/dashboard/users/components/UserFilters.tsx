@@ -35,7 +35,7 @@ export default function UserFilters({
 
       params.set("page", "1");
 
-      router.push(`/admin/users?${params.toString()}`);
+      router.replace(`/admin/users?${params.toString()}`);
     },
     [router, searchParams]
   );

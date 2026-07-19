@@ -1,14 +1,13 @@
 import { z } from "zod";
 import {
-  appointmentFormSchema,
   createAppointmentSchema,
   updateAppointmentSchema,
   updateAppointmentStatusSchema,
 } from "../schemas/appointment.schema";
 import { ActionResult } from "@/shared/types/api";
 
-import { Patient } from "@/features/admin/patients/types/patient.types";
-import { User } from "@/features/admin/users/types/user.types";
+import { Patient } from "@/features/dashboard/patients/types/patient.types";
+import { User } from "@/features/dashboard/users/types/user.types";
 
 export type AppointmentStatus =
   | "pending"
@@ -41,7 +40,6 @@ export type UpdateAppointmentPayload = z.infer<typeof updateAppointmentSchema>;
 export type UpdateAppointmentStatusPayload = z.infer<
   typeof updateAppointmentStatusSchema
 >;
-export type AppointmentFormValues = z.infer<typeof appointmentFormSchema>;
 export type CreateAppointmentResult = ActionResult<{
   appointment: Appointment;
 }>;

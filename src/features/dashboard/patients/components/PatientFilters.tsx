@@ -42,7 +42,7 @@ export default function PatientFilters({
     else params.delete("order");
 
     params.set("page", "1");
-    router.push(`/admin/patients?${params.toString()}`);
+    router.replace(`/admin/patients?${params.toString()}`);
   };
 
   useEffect(() => {

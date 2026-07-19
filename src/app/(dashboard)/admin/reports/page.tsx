@@ -1,7 +1,7 @@
 import Header from "@/shared/components/dashboard/Header";
-import AppointmentReportSection from "@/features/admin/reports/components/AppointmentReportSection";
-import { getUsers } from "@/features/admin/users/actions/get-users.action";
-import PatientReportSection from "@/features/admin/reports/components/PatientReportSection";
+import AppointmentReportSection from "@/features/dashboard/reports/components/AppointmentReportSection";
+import { getUsers } from "@/features/dashboard/users/actions/get-users.action";
+import PatientReportSection from "@/features/dashboard/reports/components/PatientReportSection";
 
 export default async function ReportsPage() {
   const doctorsData = await getUsers(1, "", "doctor", "active", 1000);

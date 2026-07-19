@@ -1,11 +1,11 @@
 import Header from "@/shared/components/dashboard/Header";
-import DashboardStatsCards from "@/features/admin/dashboard/components/DashboardStatsCards";
-import LatestAppointmentsTable from "@/features/admin/dashboard/components/LatestAppointmentsTable";
+import DashboardStatsCards from "@/features/dashboard/dashboard/components/DashboardStatsCards";
+import LatestAppointmentsTable from "@/features/dashboard/dashboard/components/LatestAppointmentsTable";
 import Link from "next/link";
 
-import { getDashboardStats } from "@/features/admin/dashboard/actions/get-dashboard-stats.action";
-import { getLatestAppointments } from "@/features/admin/dashboard/actions/get-latest-appointments.action";
-import QuickActions from "@/features/admin/dashboard/components/QuickActions";
+import { getDashboardStats } from "@/features/dashboard/dashboard/actions/get-dashboard-stats.action";
+import { getLatestAppointments } from "@/features/dashboard/dashboard/actions/get-latest-appointments.action";
+import QuickActions from "@/features/dashboard/dashboard/components/QuickActions";
 
 export default async function AdminDashboardPage() {
   const [stats, latestAppointments] = await Promise.all([

@@ -1,13 +1,13 @@
 import Header from "@/shared/components/dashboard/Header";
 import Pagination from "@/shared/components/dashboard/Pagination";
 
-import VisitFilters from "@/features/admin/visits/components/VisitFilters";
-import VisitFormModal from "@/features/admin/visits/components/VisitFormModal";
-import VisitsTable from "@/features/admin/visits/components/VisitsTable";
+import VisitFilters from "@/features/dashboard/visits/components/VisitFilters";
+import VisitFormModal from "@/features/dashboard/visits/components/VisitFormModal";
+import VisitsTable from "@/features/dashboard/visits/components/VisitsTable";
 
-import { getVisits } from "@/features/admin/visits/actions/get-visits.action";
-import { getPatients } from "@/features/admin/patients/actions/get-patients.action";
-import { getUsers } from "@/features/admin/users/actions/get-users.action";
+import { getVisits } from "@/features/dashboard/visits/actions/get-visits.action";
+import { getPatients } from "@/features/dashboard/patients/actions/get-patients.action";
+import { getUsers } from "@/features/dashboard/users/actions/get-users.action";
 
 interface VisitsPageProps {
   searchParams: Promise<{
@@ -17,9 +17,7 @@ interface VisitsPageProps {
   }>;
 }
 
-export default async function VisitsPage({
-  searchParams,
-}: VisitsPageProps) {
+export default async function VisitsPage({ searchParams }: VisitsPageProps) {
   const params = await searchParams;
 
   const currentPage = Number(params.page ?? "1");
@@ -81,4 +79,3 @@ export default async function VisitsPage({
     </div>
   );
 }
-
