@@ -4,19 +4,26 @@ import PatientFormModal from "./PatientFormModal";
 import DeletePatientButton from "./DeletePatientButton";
 import { Patient } from "../types/patient.types";
 import DataTable from "@/shared/components/dashboard/DataTable";
+import { permissions } from "@/shared/config/permissions";
+import { usePermission } from "@/shared/hooks/usePermission";
 
 interface PatientsTableProps {
   patients: Patient[];
 }
-const columns = [
-  { label: "Patient" },
-  { label: "Age" },
-  { label: "Gender" },
-  { label: "Contact" },
-  { label: "Address" },
-  { label: "Actions", className: "text-center" },
-];
+
 export default function PatientsTable({ patients }: PatientsTableProps) {
+  const canDelete = usePermission(permissions.patients.delete);
+  const canUpdate = usePermission(permissions.patients.update);
+  const columns = [
+    { label: "Patient" },
+    { label: "Age" },
+    { label: "Gender" },
+    { label: "Contact" },
+    { label: "Address" },
+    ...(canUpdate || canDelete
+      ? [{ label: "Actions", className: "text-center" }]
+      : []),
+  ];
   return (
     <DataTable columns={columns} emptyMessage="No patients found.">
       {patients.map((patient) => (
@@ -51,15 +58,20 @@ export default function PatientsTable({ patients }: PatientsTableProps) {
           <td className="px-6 py-4 whitespace-nowrap text-gray-500 max-w-50 truncate">
             {patient.address}
           </td>
-          <td className="px-6 py-4 whitespace-nowrap">
-            <div className="flex items-center justify-center gap-2">
-              <PatientFormModal patient={patient} />
-              <DeletePatientButton
-                patientId={patient.id}
-                patientName={patient.name}
-              />
-            </div>
-          </td>
+          {(canUpdate || canDelete) && (
+            <td className="px-6 py-4 whitespace-nowrap">
+              <div className="flex items-center justify-center gap-2">
+                {canUpdate && <PatientFormModal patient={patient} />}
+
+                {canDelete && (
+                  <DeletePatientButton
+                    patientId={patient.id}
+                    patientName={patient.name}
+                  />
+                )}
+              </div>
+            </td>
+          )}
         </tr>
       ))}
     </DataTable>

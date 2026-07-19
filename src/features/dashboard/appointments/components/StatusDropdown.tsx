@@ -56,7 +56,10 @@ export default function StatusDropdown({
   };
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div
+      className="absolute gap-5 top-1\2 translate-middle-y"
+      ref={dropdownRef}
+    >
       <button
         onClick={() => setIsOpen(!isOpen)}
         disabled={isPending}
@@ -92,7 +95,7 @@ export default function StatusDropdown({
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 top-full mt-1 w-40 bg-white rounded-lg shadow-lg border border-gray-100 z-50 py-1">
+        <div className="top-full mt-1 w-40 bg-white rounded-lg shadow-lg border border-gray-100 z-50 py-1">
           {STATUS_OPTIONS.map((status) => (
             <button
               key={status}

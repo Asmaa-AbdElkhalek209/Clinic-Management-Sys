@@ -48,15 +48,20 @@ export const sidebarConfig = {
   ],
 
   doctor: [
-    {
-      label: "Dashboard",
-      href: "/doctor",
-      icon: LayoutDashboard,
-    },
+    // {
+    //   label: "Dashboard",
+    //   href: "/doctor",
+    //   icon: LayoutDashboard,
+    // },
     {
       label: "Patients",
       href: "/doctor/patients",
       icon: Users,
+    },
+    {
+      label: "Appointments",
+      href: "/doctor/appointments",
+      icon: CalendarDays,
     },
     {
       label: "Visits",
@@ -66,20 +71,20 @@ export const sidebarConfig = {
   ],
 
   receptionist: [
+    // {
+    //   label: "Dashboard",
+    //   href: "/receptionist",
+    //   icon: LayoutDashboard,
+    // },
     {
-      label: "Dashboard",
-      href: "/receptionist",
-      icon: LayoutDashboard,
+      label: "Patients",
+      href: "/receptionist/patients",
+      icon: Users,
     },
     {
       label: "Appointments",
       href: "/receptionist/appointments",
       icon: CalendarDays,
-    },
-    {
-      label: "Patients",
-      href: "/receptionist/patients",
-      icon: Users,
     },
   ],
 };

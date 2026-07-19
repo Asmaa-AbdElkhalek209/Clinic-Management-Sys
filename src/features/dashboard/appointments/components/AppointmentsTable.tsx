@@ -8,6 +8,8 @@ import { Appointment } from "../types/appointment.types";
 import DeleteAppointmentButton from "./DeleteAppointmentButton";
 import StatusDropdown from "./StatusDropdown";
 import UpdateAppointmentForm from "./UpdateAppointmentForm";
+import { usePermission } from "@/shared/hooks/usePermission";
+import { permissions } from "@/shared/config/permissions";
 
 interface DropdownItem {
   id: number;
@@ -20,18 +22,22 @@ interface AppointmentsTableProps {
   patients: DropdownItem[];
 }
 
-const columns = [
-  { label: "Patient" },
-  { label: "Doctor" },
-  { label: "Date & Time" },
-  { label: "Status" },
-  { label: "Booked By" },
-  { label: "Actions", className: "text-center" },
-];
-
 export default function AppointmentsTable({
   appointments,
 }: AppointmentsTableProps) {
+  const canDelete = usePermission(permissions.appointments.delete);
+  const canUpdate = usePermission(permissions.patients.update);
+  const columns = [
+    { label: "Patient" },
+    { label: "Doctor" },
+    { label: "Date & Time" },
+    { label: "Status" },
+    { label: "Booked By" },
+    ...(canUpdate || canDelete
+      ? [{ label: "Actions", className: "text-center" }]
+      : []),
+  ];
+
   if (appointments.length === 0) {
     return (
       <DataTable columns={columns} emptyMessage="No appointments found.">
@@ -91,7 +97,7 @@ export default function AppointmentsTable({
           </td>
 
           {/* Status */}
-          <td className="px-6 py-4 whitespace-nowrap">
+          <td className="px-6 py-4 whitespace-nowrap ">
             <StatusDropdown
               appointmentId={appointment.id}
               currentStatus={appointment.status}
@@ -104,13 +110,19 @@ export default function AppointmentsTable({
           </td>
 
           {/* Actions */}
-          <td className="px-6 py-4 whitespace-nowrap">
-            <div className="flex items-center justify-center gap-2">
-              <UpdateAppointmentForm appointment={appointment} />
+          {(canUpdate || canDelete) && (
+            <td className="px-6 py-4 whitespace-nowrap">
+              <div className="flex items-center justify-center gap-2">
+                {canUpdate && (
+                  <UpdateAppointmentForm appointment={appointment} />
+                )}
 
-              <DeleteAppointmentButton appointmentId={appointment.id} />
-            </div>
-          </td>
+                {canDelete && (
+                  <DeleteAppointmentButton appointmentId={appointment.id} />
+                )}
+              </div>
+            </td>
+          )}
         </tr>
       ))}
     </DataTable>

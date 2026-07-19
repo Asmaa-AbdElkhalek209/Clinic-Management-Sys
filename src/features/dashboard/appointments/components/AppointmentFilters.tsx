@@ -1,5 +1,7 @@
 "use client";
 
+import { permissions } from "@/shared/config/permissions";
+import { usePermission } from "@/shared/hooks/usePermission";
 import { useRouter, useSearchParams } from "next/navigation";
 import { usePathname } from "next/navigation";
 
@@ -28,8 +30,7 @@ export default function AppointmentFilters({
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  console.log(pathname);
-
+  const canFilterDoctor = usePermission(permissions.appointments.filterDoctor);
   const updateFilter = (
     key: "date" | "status" | "doctorId" | "patientId",
     value: string
@@ -83,46 +84,50 @@ export default function AppointmentFilters({
       </div>
 
       {/* Doctor */}
-      <div>
-        <label className="block text-xs font-medium text-gray-500 mb-1">
-          Doctor
-        </label>
+      {canFilterDoctor && (
+        <div>
+          <label className="block text-xs font-medium text-gray-500 mb-1">
+            Doctor
+          </label>
 
-        <select
-          value={initialDoctorId}
-          onChange={(e) => updateFilter("doctorId", e.target.value)}
-          className="w-48 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
-        >
-          <option value="">All Doctors</option>
+          <select
+            value={initialDoctorId}
+            onChange={(e) => updateFilter("doctorId", e.target.value)}
+            className="w-48 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          >
+            <option value="">All Doctors</option>
 
-          {doctors.map((doctor) => (
-            <option key={doctor.id} value={doctor.id}>
-              {doctor.name}
-            </option>
-          ))}
-        </select>
-      </div>
+            {doctors.map((doctor) => (
+              <option key={doctor.id} value={doctor.id}>
+                {doctor.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
       {/* Patient */}
-      <div>
-        <label className="block text-xs font-medium text-gray-500 mb-1">
-          Patient
-        </label>
+      {canFilterDoctor && (
+        <div>
+          <label className="block text-xs font-medium text-gray-500 mb-1">
+            Patient
+          </label>
 
-        <select
-          value={initialPatientId}
-          onChange={(e) => updateFilter("patientId", e.target.value)}
-          className="w-48 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
-        >
-          <option value="">All Patients</option>
+          <select
+            value={initialPatientId}
+            onChange={(e) => updateFilter("patientId", e.target.value)}
+            className="w-48 rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+          >
+            <option value="">All Patients</option>
 
-          {patients.map((patient) => (
-            <option key={patient.id} value={patient.id}>
-              {patient.name}
-            </option>
-          ))}
-        </select>
-      </div>
+            {patients.map((patient) => (
+              <option key={patient.id} value={patient.id}>
+                {patient.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
     </div>
   );
 }

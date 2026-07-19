@@ -6,12 +6,12 @@ interface Props {
 
 export default function SaveProfileButton({ isPending }: Props) {
   return (
-    <div className="sticky bottom-0 px-5">
+    <div className="p-5">
       <div className="flex justify-end">
         <button
           type="submit"
           disabled={isPending}
-          className="rounded-xl bg-blue-600 px-10 py-3 font-semibold text-white transition hover:bg-blue-700 disabled:opacity-50"
+          className="rounded-xl bg-blue-600 px-6 py-2 font-medium text-white transition hover:bg-blue-700 disabled:opacity-50"
         >
           {isPending ? "Saving..." : "Save Changes"}
         </button>

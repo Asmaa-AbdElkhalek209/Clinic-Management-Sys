@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Search } from "lucide-react";
 import { ArrowUp, ArrowDown } from "lucide-react";
 interface PatientFiltersProps {
@@ -20,7 +20,7 @@ export default function PatientFilters({
   const router = useRouter();
   const searchParams = useSearchParams();
   const [searchTerm, setSearchTerm] = useState(initialSearch);
-
+  const pathname = usePathname();
   const updateURL = (
     newSearch: string,
     newGender: string,
@@ -42,7 +42,7 @@ export default function PatientFilters({
     else params.delete("order");
 
     params.set("page", "1");
-    router.replace(`/admin/patients?${params.toString()}`);
+    router.replace(`${pathname}?${params.toString()}`);
   };
 
   useEffect(() => {
