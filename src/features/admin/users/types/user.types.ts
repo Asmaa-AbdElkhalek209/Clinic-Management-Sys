@@ -1,9 +1,5 @@
 import { z } from "zod";
-import {
-  createUserSchema,
-  updateUserSchema,
-  userFormSchema,
-} from "../schemas/user.schema";
+import { createUserSchema, updateUserSchema } from "../schemas/user.schema";
 import { ActionResult } from "@/shared/types/api";
 
 export type UserRole = "admin" | "doctor" | "receptionist";
@@ -46,5 +42,4 @@ export interface SpecialitiesResponse {
 
 export type CreateUserPayload = z.infer<typeof createUserSchema>;
 export type UpdateUserPayload = z.infer<typeof updateUserSchema>;
-export type UserFormValues = z.infer<typeof userFormSchema>;
 export type UsersActionResult<T = void> = ActionResult<T>;

@@ -3,8 +3,8 @@ import {
   getUsers,
   getUsersStats,
 } from "@/features/admin/users/actions/get-users.action";
+import CreateUserForm from "@/features/admin/users/components/CreateUserForm";
 import UserFilters from "@/features/admin/users/components/UserFilters";
-import UserFormModal from "@/features/admin/users/components/UserFormModal";
 import UsersStatsCards from "@/features/admin/users/components/UsersStatsCards";
 import UsersTable from "@/features/admin/users/components/UsersTable";
 import Header from "@/shared/components/dashboard/Header";
@@ -49,7 +49,8 @@ export default async function UsersPage({
       />
 
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 bg-white p-4 rounded-lg shadow-sm border border-gray-100">
-        <UserFormModal specialities={specialities} />
+        {/* <UserFormModal specialities={specialities} /> */}
+        <CreateUserForm specialities={specialities} />
 
         <UserFilters
           initialSearch={searchQuery}

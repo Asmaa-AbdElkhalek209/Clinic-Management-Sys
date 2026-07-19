@@ -1,6 +1,6 @@
 "use client";
 
-import UserFormModal from "./UserFormModal";
+import UpdateUserForm from "./UpdateUserForm";
 import DeleteUserButton from "./DeleteUserButton";
 import { User, Speciality } from "../types/user.types";
 import ToggleStatusButton from "./ToggleStatusButton";
@@ -82,8 +82,7 @@ export default function UsersTable({ users, specialities }: UsersTableProps) {
           </td>
           <td className="px-6 py-4 whitespace-nowrap">
             <div className="flex items-center justify-center gap-2">
-              {/* ✅ تمرير الـ specialities للمودال اللي جوا الجدول */}
-              <UserFormModal user={user} specialities={specialities} />
+              <UpdateUserForm user={user} specialities={specialities} />{" "}
               <DeleteUserButton userId={user.id} userName={user.name} />
             </div>
           </td>
